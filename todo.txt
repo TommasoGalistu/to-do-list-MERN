@@ -1,0 +1,2 @@
+fare dal register il redirect al login quando hai la conferma di avvenuto inserimento
+fare il login con invio del jwt
