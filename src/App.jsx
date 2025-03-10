@@ -1,8 +1,11 @@
 import './App.css'
 import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route} from 'react-router-dom'
-import Home from './pages/Home'
+import PublicHome from './pages/PublicHome'
 import Root from './pages/Root'
 import List from './pages/List'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import ErrorPage from './pages/ErrorPage'
 
 const routeDefinitions = createRoutesFromElements(
   <Route>
@@ -13,16 +16,24 @@ const routeDefinitions = createRoutesFromElements(
 const router = createBrowserRouter([
   { path: '/', 
     element: <Root />,
+    errorElement: <ErrorPage />,
     children: [
       {path: '/',
-        element: <Home />
+        element: <PublicHome />
       },
       {path: '/liste',
         element: <List />
+      },
+      {path: '/login',
+        element: <Login />
+      },
+      {path: '/register',
+        element: <Register/>
       }
+      
     ]
   },
-  {}
+  
 ])
 function App() {
 

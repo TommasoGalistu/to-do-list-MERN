@@ -1,16 +1,39 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import MenuHeader from "./MenuHeader";
+import { useState } from "react";
 
-function Header(){
-    return <header>
-        <ul>
-            <li>
-                <Link to='/' >Home</Link>
-            </li>
-            <li>
-                <Link to='/liste' >Liste</Link>
-            </li>
-        </ul>
-    </header>
+function Header() {
+    const [isOpen, setIsOpen] = useState(false);
+
+    function handleClassOpenMenu(){
+        setIsOpen(prevBool => !prevBool)
+    }
+  return (
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <Container>
+        
+        <Navbar.Brand as={Link} to="/">To do List MERN</Navbar.Brand>
+
+        {/* TOGGLE BUTTON PER IL COLLASSO */}
+        <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleClassOpenMenu} />
+
+        {/* MENU COLLASSATO */}
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="d-lg-none w-100 text-center">
+            <MenuHeader />
+          </Nav>
+        </Navbar.Collapse>
+
+        {/* MENU FUORI DAL COLLASSO (VISIBILE SOLO SU SCHERMI GRANDI) */}
+        <Nav className="d-none d-lg-flex">
+            <MenuHeader />
+        </Nav>
+      </Container>
+    </Navbar>
+  );
 }
 
-export default Header
+export default Header;
