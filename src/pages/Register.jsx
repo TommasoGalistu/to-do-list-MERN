@@ -6,14 +6,27 @@ import { checkDataForm } from '../utils/checkData';
 
 
 function Register() {
-  
+    
     function validateForm(event){
         event.preventDefault()
         const formData = new FormData(event.target);
         const data = Object.fromEntries(formData.entries())
         if(checkDataForm(data)){
-            
+            addUser(data)
         }
+    }
+
+    async function addUser(dataObj){
+        const response = await fetch('http://localhost:3000/user',{
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dataObj)
+        })
+        const data = await response.json();
+
+        console.log(data)
     }
 
   return (
@@ -32,7 +45,7 @@ function Register() {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Conferma Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" name='repeatPassword' required/>
+                            <Form.Control type="password" placeholder="Password" />
                         </Form.Group>
                         
                         <Button variant="primary" type='submit'>
