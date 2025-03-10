@@ -25,4 +25,4 @@ dist-ssr
 
 
 #dati sensibili
-backend/.env
+**/.env
