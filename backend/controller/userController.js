@@ -60,6 +60,24 @@ const userController = {
         }catch(error){
             res.status(400).json({error: error.message})
         }
+    },
+    logout: async (req,res) => {
+
+        try{
+            const token = req.cookies.token; 
+
+            if(token){
+                res.clearCookie("token", {
+                    httpOnly: true
+                });
+                res.status(200).json({message: "Logout effettuato con successo"})
+            }
+        }catch(error){
+            res.status(400).json({error: error.message})
+        }
+        
+
+        
     }
 }
 

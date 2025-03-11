@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, use } from "react";
+import {ContextData} from "../store/data";
 const useAuth = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(null); // null = caricamento
+    const {isLoggin, setIsLoggin} = use(ContextData)
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -17,8 +18,10 @@ const useAuth = () => {
 
                 const data = await response.json();
                 setIsAuthenticated(true); // ✅ L'utente è autenticato
+                setIsLoggin(true)
             } catch (error) {
                 setIsAuthenticated(false); // ❌ Non autenticato
+                setIsLoggin(false)
             }
         };
 

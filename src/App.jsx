@@ -7,6 +7,8 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import ErrorPage from './pages/ErrorPage'
 import PrivateHome from './pages/PrivateHome'
+import {ContextProvider} from './store/data';
+import Logout from './pages/Logout'
 
 const routeDefinitions = createRoutesFromElements(
   <Route>
@@ -33,6 +35,9 @@ const router = createBrowserRouter([
       },
       {path: '/privato',
         element: <PrivateHome/>
+      },
+      {path: '/logout',
+        element: <Logout/>
       }
       
     ]
@@ -42,7 +47,12 @@ const router = createBrowserRouter([
 function App() {
 
 
-  return <RouterProvider router={router} />
+  return <>
+  <ContextProvider>
+    <RouterProvider router={router} />
+  </ContextProvider>
+  </>
+  
 }
 
 export default App

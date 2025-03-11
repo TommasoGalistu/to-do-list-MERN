@@ -1,12 +1,13 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ErrorTextForm from '../pages/ErrorTextForm'
 import { useState } from 'react';
 import { checkDataForm } from '../utils/checkData';
 
 function Login(){
+    const navigate = useNavigate()
     const [response, setResponese] = useState({
             type: null,
             res: ''
@@ -21,23 +22,28 @@ function Login(){
     }
 
     async function checkUser(dataObj){
-        
-        const response = await fetch('http://localhost:3000/user/login',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: "include",
-            body: JSON.stringify(dataObj)
+        try{
+            const response = await fetch('http://localhost:3000/user/login',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: "include",
+                body: JSON.stringify(dataObj)
+            })
+            const data = await response.json()
+            console.log(data)
+            setResponese(prevRes => {
+            return prevRes = {
+                type: true,
+                res: 'Sei registrato'
+            }
         })
-        const data = await response.json()
-        console.log(data)
-        setResponese(prevRes => {
-        return prevRes = {
-            type: true,
-            res: 'Sei registrato'
+        navigate('/privato')
+        }catch(error){
+            console.log(error.message)
         }
-    })
+        
     }
 
     
