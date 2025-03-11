@@ -28,6 +28,7 @@ function Register() {
             headers: {
                 "Content-Type": "application/json"
             },
+            credentials: "include",
             body: JSON.stringify(dataObj)
         })
         const data = await response.json();

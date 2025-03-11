@@ -42,11 +42,21 @@ const userController = {
                 {id: user._id, email: user.email, ip: req.ip},
                 process.env.JWT_SECRET,
                 {
-                    expiresIn: '1h'
+                    expiresIn: '1d'
                 }
             )
 
-            res.status(200).json({message: "Login riuscito!!", token, email})
+            res.cookie('token', token, {
+                httpOnly: true,  // Protegge il token da JavaScript (XSS)
+                // // secure: process.env.NODE_ENV === "production", // Solo HTTPS in produzione
+                // sameSite: "None", // Previene attacchi CSRF
+                // secure: false, //Richiede HTTPS (NON funziona su localhost)
+                maxAge: 24 * 60 * 60 * 1000, // Scadenza: 1 giorno
+                // path: "/", // Disponibile su tutto il sito
+                // domain: "tuodominio.com" // (Opzionale) Disponibile solo su questo dominio
+            })
+
+            res.status(200).json({message: "Login riuscito!!", email, token: token})
         }catch(error){
             res.status(400).json({error: error.message})
         }

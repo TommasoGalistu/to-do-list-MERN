@@ -6,6 +6,7 @@ import List from './pages/List'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ErrorPage from './pages/ErrorPage'
+import PrivateHome from './pages/PrivateHome'
 
 const routeDefinitions = createRoutesFromElements(
   <Route>
@@ -29,6 +30,9 @@ const router = createBrowserRouter([
       },
       {path: '/register',
         element: <Register/>
+      },
+      {path: '/privato',
+        element: <PrivateHome/>
       }
       
     ]
