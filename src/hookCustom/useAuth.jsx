@@ -17,10 +17,10 @@ const useAuth = () => {
                 }
 
                 const data = await response.json();
-                setIsAuthenticated(true); // ✅ L'utente è autenticato
+                setIsAuthenticated(true); 
                 setIsLoggin(true)
             } catch (error) {
-                setIsAuthenticated(false); // ❌ Non autenticato
+                setIsAuthenticated(false); 
                 setIsLoggin(false)
             }
         };

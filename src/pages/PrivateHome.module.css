@@ -1,0 +1,29 @@
+.cont{
+    padding-top: 1rem;
+    width: 50%;
+    margin:auto;
+    text-align: center;
+}
+.title{
+    font-size: 2rem;
+    margin-right: 2rem;
+}
+.button {
+    font-size: 3rem;
+    padding: 1rem;
+    &:hover{
+        color: grey;
+        cursor: pointer;
+    }
+}  
+
+ul{
+
+    text-align: left;
+
+    .elementList{
+        border: 1px solid black;
+        margin: 1rem;
+        padding: 0.5rem;
+    }
+}
