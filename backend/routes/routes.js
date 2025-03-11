@@ -5,6 +5,7 @@ const router = express.Router()
 router.get('/', (req,res) =>{
     res.send('Hello Pagina pubblica')
 })
-router.post('/', userController.create)
+router.post('/register', userController.create)
+router.post('/login', userController.login)
 
 module.exports = router; 

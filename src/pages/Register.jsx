@@ -1,12 +1,18 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import { checkDataForm } from '../utils/checkData';
-
+import ErrorTextForm from '../pages/ErrorTextForm'
+import { useState } from 'react';
 
 
 function Register() {
-    
+    const navigate = useNavigate()
+    const [response, setResponese] = useState({
+        type: null,
+        res: ''
+    })
     function validateForm(event){
         event.preventDefault()
         const formData = new FormData(event.target);
@@ -17,7 +23,7 @@ function Register() {
     }
 
     async function addUser(dataObj){
-        const response = await fetch('http://localhost:3000/user',{
+        const response = await fetch('http://localhost:3000/user/register',{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -26,6 +32,26 @@ function Register() {
         })
         const data = await response.json();
 
+        if(data.email){
+            setResponese(prevRes => {
+                return prevRes = {
+                    type: true,
+                    res: 'Sei registrato'
+                }
+            })
+            const timer = setTimeout(() => {
+                navigate('/login')
+            }, 3000);
+            
+        }else{
+            setResponese(prevRes => {
+                return prevRes = {
+                    type: false,
+                    res: 'Controlla i dati'
+                }
+            })
+            
+        }
         console.log(data)
     }
 
@@ -47,7 +73,7 @@ function Register() {
                             <Form.Label>Conferma Password</Form.Label>
                             <Form.Control type="password" placeholder="Password" />
                         </Form.Group>
-                        
+                        <ErrorTextForm typeText={response.type}>{response.res}</ErrorTextForm>
                         <Button variant="primary" type='submit'>
                             Submit
                         </Button>
