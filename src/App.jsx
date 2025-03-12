@@ -6,9 +6,11 @@ import List from './pages/List'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ErrorPage from './pages/ErrorPage'
-import PrivateHome from './pages/PrivateHome'
-import {ContextProvider} from './store/data';
-import Logout from './pages/Logout'
+import PrivateHome from './pages/auth/PrivateHome'
+import {ContextData, ContextProvider} from './store/data';
+import Logout from './pages/auth/Logout'
+import {  useEffect, useState } from 'react'
+
 
 const routeDefinitions = createRoutesFromElements(
   <Route>
@@ -45,7 +47,7 @@ const router = createBrowserRouter([
   
 ])
 function App() {
-
+  
 
   return <>
   <ContextProvider>

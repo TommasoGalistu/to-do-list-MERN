@@ -1,7 +1,8 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const User = require('../model/userModel');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const Todo = require('../model/toDoModel')
 
 const TIME_TO_REPEAT = 15
 
@@ -78,6 +79,33 @@ const userController = {
         
 
         
+    },
+    check: async (req, res) =>{
+        try{
+            const token = req.cookies.token; 
+            const decoded = jwt.verify(token, process.env.JWT_SECRET); 
+            
+            if(decoded){
+                res.status(200).json({message: true, user: decoded.email})
+            }else{
+                res.status(201).json({message: false})
+            }
+        }catch(error){
+            res.status(400).json({ message: "Controllo fallito!!" })
+        }
+    },
+    getAll: async (req, res) =>{
+        try{
+
+            const listComplete = await Todo.find().sort({ createdAt: -1 });
+            console.log(listComplete);
+            if(listComplete){
+                res.status(200).json(listComplete);
+            }
+
+        }catch(error){
+
+        }
     }
 }
 

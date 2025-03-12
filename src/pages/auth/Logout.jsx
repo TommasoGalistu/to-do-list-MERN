@@ -1,5 +1,5 @@
 import { use } from 'react';
-import { ContextData} from '../store/data';
+import { ContextData} from '../../store/data';
 import {  useNavigate } from 'react-router-dom';
 
 function Logout(){

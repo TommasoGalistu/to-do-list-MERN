@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import useAuth from "../hookCustom/useAuth";
-import { use } from "react";
-import {  ContextData } from '../store/data'
+import useAuth from "../../hookCustom/useAuth";
+import { useState } from "react";
+import {  ContextData } from '../../store/data'
 import styles from './PrivateHome.module.css'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
+import ListsGroup from "./ListsGroup";
 
 function PrivateHome(){
-    const {isLoggin, setIsLoggin} = use(ContextData)
+    // const [isLoggin, setIsLoggin] = use(ContextData)
+    const [isSentCount, setIsSentCount] = useState(0)
     const isAuthenticated = useAuth();
     const navigate = useNavigate();
 
@@ -25,9 +27,29 @@ function PrivateHome(){
 
         let form = new FormData(event.target);
         let data = Object.fromEntries(form.entries())
-        console.log(data)
+        
+        try{
+            const response = await fetch('http://localhost:3000/user/add-todo', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify(data)
+            })
+
+            if(!response.ok){
+                throw new Error("Errore nella richiesta")
+            }
+            const result = await response.json();
+            console.log("Elemento inserito in DB ", result)
+            setIsSentCount(prevCount => prevCount + 1);
+        }catch(error){
+            console.log(error.message)
+        }
     }
-    console.log('la variabile è ',isLoggin)
+    
+
     return <div className={styles.cont}>
         <p className={styles.title}>Cosa vuoi aggiungere nella tua lista?</p>
 
@@ -36,11 +58,7 @@ function PrivateHome(){
             <Button type="submit">Aggiungi</Button>
 
         </Form>
-        <ul>
-            <li className={styles.elementList}>quello che devo fare DESCRIZIONE</li>
-            <li className={styles.elementList}>quello che devo fare DESCRIZIONE</li>
-            <li className={styles.elementList}>quello che devo fare DESCRIZIONE</li>
-        </ul>
+        <ListsGroup isReloaded={isSentCount} />
     </div>
 }
 
