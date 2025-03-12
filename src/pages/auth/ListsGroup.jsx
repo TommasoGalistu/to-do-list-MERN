@@ -19,6 +19,8 @@ function ListsGroup({isReloaded}){
                     throw new Error("Errore nel caricamento delle liste")
                 }
                 const data = await response.json();
+                
+
                 setListElement(data)
                 console.log('ul lista ricaricata ', data)
 
@@ -28,9 +30,30 @@ function ListsGroup({isReloaded}){
         }
         fetchList()
     }, [isReloaded])
+
+    async function eliminateTask(id){
+        try{
+            console.log(id)
+            const response = await fetch('http://localhost:3000/user/delete', {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({id})
+            })
+            const data = await response.json();
+            console.log('delete effettuato ',data.tasks)
+            setListElement(data.tasks)
+
+        }catch(error){
+            console.log(error.message)
+        }
+    }
+    
     return <ul>
                 {listElement.map(element =>{
-                    return <ElementList key={element._id} className={styles.elementList} text={element.description} />
+                    return <ElementList key={element._id} className={styles.elementList} task={element} deleteTask={eliminateTask} />
                 })}
                 
             </ul>

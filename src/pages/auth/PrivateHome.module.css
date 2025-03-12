@@ -25,5 +25,16 @@ ul{
         border: 1px solid black;
         margin: 1rem;
         padding: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        padding-right: 1rem;
+        & i{
+            font-size: 2rem;
+            color: blue;
+            &:hover{
+                color: red;
+                cursor: pointer;
+            }
+        }
     }
 }
