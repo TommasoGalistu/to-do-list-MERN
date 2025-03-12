@@ -1,5 +1,5 @@
 const express = require('express');
-const router = require('./routes/routes');
+const {publicRouter, privateRouter} = require('./routes/routes');
 const mongoose = require('mongoose');
 const corsMiddleware = require('./middleware/cors');
 const cookieParser = require("cookie-parser");
@@ -18,7 +18,8 @@ mongoose.connect('mongodb://localhost:27017/todolist-mern')
 
 
 
-app.use('/user', router)
+app.use('/', publicRouter)
+app.use('/user', privateRouter)
 
 app.listen(PORT, () =>{
     console.log(`Sei online alla porta ${PORT}`)

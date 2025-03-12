@@ -1,13 +1,23 @@
 const express = require('express')
 const userController = require('../controller/userController');
-const router = express.Router()
+
+const publicRouter = express.Router()
+const privateRouter = express.Router()
+
 const authMiddleware = require('../middleware/authMiddleware')
 
-router.get('/utente-autenticato', authMiddleware , (req,res) =>{
+// private router
+privateRouter.use(authMiddleware)
+
+privateRouter.get('/utente-autenticato', (req,res) =>{
     res.status(200).json({message: "sei autorizzato"});
 })
-router.get('/logout', userController.logout)
-router.post('/register', userController.create)
-router.post('/login', userController.login)
+privateRouter.get('/logout', userController.logout)
 
-module.exports = router; 
+
+
+// public router
+publicRouter.post('/register', userController.create)
+publicRouter.post('/login', userController.login)
+
+module.exports = {publicRouter, privateRouter}; 
