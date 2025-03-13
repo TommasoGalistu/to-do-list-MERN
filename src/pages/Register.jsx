@@ -5,6 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { checkDataForm } from '../utils/checkData';
 import ErrorTextForm from '../pages/ErrorTextForm'
 import { useState } from 'react';
+import useFetchWithLoading from '../utils/fetchRequest';
 
 
 function Register() {
@@ -13,17 +14,19 @@ function Register() {
         type: null,
         res: ''
     })
+    const fetchData = useFetchWithLoading()
     function validateForm(event){
         event.preventDefault()
         const formData = new FormData(event.target);
         const data = Object.fromEntries(formData.entries())
+        
         if(checkDataForm(data)){
             addUser(data)
         }
     }
 
     async function addUser(dataObj){
-        const response = await fetch('http://localhost:3000/register',{
+        const response = await fetchData('http://localhost:3000/register',{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -31,13 +34,13 @@ function Register() {
             credentials: "include",
             body: JSON.stringify(dataObj)
         })
-        const data = await response.json();
+        
 
-        if(data.email){
+        if(response.email){
             setResponese(prevRes => {
                 return prevRes = {
                     type: true,
-                    res: 'Sei registrato'
+                    res: 'Sei registrato..attendi'
                 }
             })
             const timer = setTimeout(() => {
@@ -48,12 +51,12 @@ function Register() {
             setResponese(prevRes => {
                 return prevRes = {
                     type: false,
-                    res: 'Controlla i dati'
+                    res: 'Dati errati..'
                 }
             })
             
         }
-        console.log(data)
+        
     }
 
   return (

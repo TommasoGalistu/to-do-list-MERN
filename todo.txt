@@ -1,2 +1,4 @@
-ho creato il model di mongoose per la todo list, ho iniziato a creare il controller. Bisogna fare la rotta, testare l'api e farla comunicare con il front
+sto standardizzando le fetch. mi mancano da fare list group e logout.
 
+dopodichè serve inserire la pagina di caricamento ad ogni richiesta. ho fatto la pagina e preparato
+il contesto. bisogna provarlo nella fetch standard

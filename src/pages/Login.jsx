@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ErrorTextForm from '../pages/ErrorTextForm'
 import { useState } from 'react';
 import { checkDataForm } from '../utils/checkData';
+import useFetchWithLoading from '../utils/fetchRequest';
 
 function Login(){
     const navigate = useNavigate()
@@ -12,6 +13,8 @@ function Login(){
             type: null,
             res: ''
         })
+    const fetchData = useFetchWithLoading();
+
     function validateForm(event){
         event.preventDefault()
         const formData = new FormData(event.target);
@@ -22,27 +25,38 @@ function Login(){
     }
 
     async function checkUser(dataObj){
-        try{
-            const response = await fetch('http://localhost:3000/login',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: "include",
-                body: JSON.stringify(dataObj)
-            })
-            const data = await response.json()
-            console.log(data)
+        
+        const response = await fetchData('http://localhost:3000/login',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: "include",
+            body: JSON.stringify(dataObj)
+        })
+        if(response){
+            
+            
             setResponese(prevRes => {
             return prevRes = {
                 type: true,
-                res: 'Sei registrato'
+                res: 'Accesso consentito..Attendi..'
             }
-        })
-        navigate('/privato')
-        }catch(error){
-            console.log(error.message)
+            })
+            setTimeout(() =>{
+                navigate('/privato')
+            },4000)
+            
+        }else{
+            setResponese(prevRes => {
+                return prevRes = {
+                    type: false,
+                    res: 'Credenziali errate!!'
+                }
+                })
         }
+    
+       
         
     }
 

@@ -1,17 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hookCustom/useAuth";
-import { useState } from "react";
+import { use, useContext, useState } from "react";
 import {  ContextData } from '../../store/data'
 import styles from './PrivateHome.module.css'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ListsGroup from "./ListsGroup";
+import useFetchWithLoading from "../../utils/fetchRequest";
 
 function PrivateHome(){
-    // const [isLoggin, setIsLoggin] = use(ContextData)
+    // const [showLoading, hideLoading] = useContext(ContextData)
     const [isSentCount, setIsSentCount] = useState(0)
     const isAuthenticated = useAuth();
+    const fetchData = useFetchWithLoading();
     const navigate = useNavigate();
 
     if(isAuthenticated === null){
@@ -24,12 +26,12 @@ function PrivateHome(){
 
     async function addElementList(event){
         event.preventDefault()
-
+        
         let form = new FormData(event.target);
         let data = Object.fromEntries(form.entries())
         
-        try{
-            const response = await fetch('http://localhost:3000/user/add-todo', {
+        
+            const response = await fetchData('http://localhost:3000/user/add-todo', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -38,15 +40,16 @@ function PrivateHome(){
                 body: JSON.stringify(data)
             })
 
-            if(!response.ok){
-                throw new Error("Errore nella richiesta")
+            if(response){
+
+                const result = await response.json();
+                console.log("Elemento inserito in DB ", result)
+                setIsSentCount(prevCount => prevCount + 1);
+            }else{
+                console.log('errore nel caricamento pagina privata')
             }
-            const result = await response.json();
-            console.log("Elemento inserito in DB ", result)
-            setIsSentCount(prevCount => prevCount + 1);
-        }catch(error){
-            console.log(error.message)
-        }
+            
+        
     }
     
 
