@@ -16,6 +16,7 @@ privateRouter.get('/utente-autenticato', (req,res) =>{
 privateRouter.get('/logout', userController.logout)
 privateRouter.post('/add-todo', todoController.create)
 privateRouter.delete('/delete', todoController.delete)
+privateRouter.patch('/update', todoController.update)
 
 
 

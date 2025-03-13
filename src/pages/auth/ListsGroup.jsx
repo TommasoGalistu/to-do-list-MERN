@@ -50,10 +50,35 @@ function ListsGroup({isReloaded}){
             console.log(error.message)
         }
     }
-    
+    async function updateTask(id, description, index){
+        try{
+            const response = await fetch('http://localhost:3000/user/update', {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    id: id,
+                    description: description
+                })
+            })
+
+            const tasks = await response.json()
+            setListElement(prevTask => tasks.todos)
+        }catch(error){
+            console.log(error.message)
+        }
+    }
     return <ul>
-                {listElement.map(element =>{
-                    return <ElementList key={element._id} className={styles.elementList} task={element} deleteTask={eliminateTask} />
+                {listElement.map((element, index) =>{
+                    return <ElementList key={element._id} 
+                                className={styles.elementList} 
+                                task={element}
+                                index={index}
+                                deleteTask={eliminateTask}
+                                updateTask={updateTask}
+                                 />
                 })}
                 
             </ul>

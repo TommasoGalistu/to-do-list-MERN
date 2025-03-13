@@ -20,7 +20,18 @@ const todoController = {
         }catch(error){
             res.status(400).json({error: error.message})
         }
-    } 
+    },
+    update: async (req, res) =>{
+        try{
+            
+            await Todo.updateOne({ _id: req.body.id}, { description: req.body.description});
+            const todos = await Todo.find().sort({ createdAt: -1 });
+
+            res.status(200).json({message: "Update avvenuto con successo", todos})
+        }catch(error){
+            res.status(400).json({error: error.message})
+        }
+    }
 }
 
 module.exports = todoController;

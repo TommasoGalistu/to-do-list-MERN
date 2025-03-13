@@ -1,6 +1,7 @@
 .cont{
     padding-top: 1rem;
     width: 50%;
+    
     margin:auto;
     text-align: center;
 }
@@ -28,13 +29,33 @@ ul{
         display: flex;
         justify-content: space-between;
         padding-right: 1rem;
-        & i{
-            font-size: 2rem;
-            color: blue;
-            &:hover{
-                color: red;
-                cursor: pointer;
+        input{
+            width: 70%;
+        }
+        .contFont{
+            display: flex;
+            gap: 1rem;
+            & i{
+                font-size: 1.5rem;
+                color: blue;
+                &:hover{
+                    color: red;
+                    cursor: pointer;
+                }
             }
+            
         }
     }
+}
+
+
+@media screen and (max-width:686px){
+    .cont{
+        width: 95%;
+    }
+    
+    .inputList{
+        width: auto;
+    }
+    
 }
