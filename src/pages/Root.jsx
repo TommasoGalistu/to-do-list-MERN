@@ -2,12 +2,18 @@ import { Outlet } from "react-router-dom"
 
 import Header from "../components/Header"
 import useAuth from "../hookCustom/useAuth";
+import { useEffect, useState } from "react";
 
 
 function Root(){
-    useAuth();
+    // const isAuthenticated = useAuth()
+    // const [isLoggedProps, setIsLoggedProps] = useState(isAuthenticated)
+    // useEffect(() =>{
+    //     setIsLoggedProps(prevProps => isAuthenticated)
+    // }, [isAuthenticated])
+
     return <>
-        <Header />
+        <Header  />
         <Outlet />
     </>
 }

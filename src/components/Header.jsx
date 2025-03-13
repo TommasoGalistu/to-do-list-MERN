@@ -2,42 +2,43 @@ import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import MenuHeader from "./MenuHeader";
-import { useState } from "react";
-import { use } from "react";
-import {  ContextData } from '../store/data'
+import { useContext, memo } from "react";
+import { ContextData } from "../store/data";
+import { NavDropdown } from "react-bootstrap";
 
-function Header() {
-    const {isLoggin} = use(ContextData)
-    
-    const [isOpen, setIsOpen] = useState(false);
+const Header = memo(() => {
+    const { isLoggin } = useContext(ContextData); // Recupera lo stato di autenticazione
 
-    function handleClassOpenMenu(){
-        setIsOpen(prevBool => !prevBool)
-    }
-  return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        
-        <Navbar.Brand as={Link} to="/">To do List MERN</Navbar.Brand>
+    return (
+        <Navbar expand="lg" className="bg-body-tertiary">
+            <Container>
+                <Navbar.Brand as={Link} to="/">To do List MERN</Navbar.Brand>
 
-        {/* TOGGLE BUTTON PER IL COLLASSO */}
-        <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleClassOpenMenu} />
+                <NavDropdown
+                    title="Menu"
+                    id={`offcanvasNavbarDropdown-expand`}
+                    align="end"
+                    className="d-lg-none"
+                  >
+                    <NavDropdown.Item as={Link} to="/">Home Pubblica</NavDropdown.Item>
+                    {isLoggin && <NavDropdown.Item as={Link} to="/privato">Home Privata</NavDropdown.Item>}
+                    <NavDropdown.Item as={Link} to="/liste">Liste</NavDropdown.Item>
+                    {!isLoggin && <NavDropdown.Item as={Link} to="/login">Login</NavDropdown.Item>}
+                    {isLoggin && <NavDropdown.Item as={Link} to="/logout">Logout</NavDropdown.Item>}
+                    
+                  </NavDropdown>
 
-        {/* MENU COLLASSATO */}
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="d-lg-none w-100 text-center">
-            <MenuHeader isLoggin={isLoggin} />
-          </Nav>
-        </Navbar.Collapse>
-
-        {/* MENU FUORI DAL COLLASSO (VISIBILE SOLO SU SCHERMI GRANDI) */}
-        <Nav className="d-none d-lg-flex">
-            <MenuHeader isLoggin={isLoggin} />
-        </Nav>
-      </Container>
-    </Navbar>
-  );
-}
+                {/* MENU PER SCHERMI GRANDI */}
+                <Nav className="d-none d-lg-flex">
+                  <Nav.Link as={Link} to="/">Home Pubblica</Nav.Link>
+                  {isLoggin && <Nav.Link as={Link} to="/privato">Home Privata</Nav.Link>}
+                  <Nav.Link as={Link} to="/liste">Liste</Nav.Link>
+                  {!isLoggin && <Nav.Link as={Link} to="/login">Login</Nav.Link>}
+                  {isLoggin && <Nav.Link as={Link} to="/logout">Logout</Nav.Link>}
+                </Nav>
+            </Container>
+        </Navbar>
+    );
+});
 
 export default Header;
