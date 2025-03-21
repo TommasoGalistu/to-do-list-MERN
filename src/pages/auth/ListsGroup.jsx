@@ -1,40 +1,34 @@
 import { useEffect, useState } from 'react';
 import styles from './PrivateHome.module.css'
 import ElementList from './ElementList';
+import useFetchWithLoading from '../../utils/fetchRequest';
 
 function ListsGroup({isReloaded}){
+    const fetchData = useFetchWithLoading();
     const [listElement, setListElement] = useState([])
     useEffect(() =>{
-        const fetchList = async () =>{
-            try{
-                const response = await fetch("http://localhost:3000/list", {
-                    method: "GET",
-                    headers:{
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include",
-                });
+        async function callDb(){
 
-                if(!response.ok){
-                    throw new Error("Errore nel caricamento delle liste")
+            const response = await fetchData("http://localhost:3000/list", {
+                        method: "GET",
+                        headers:{
+                            "Content-Type": "application/json"
+                        },
+                        credentials: "include",
+                    });
+                    
+                if(response){
+                    setListElement(response);
+                    console.log('ul lista ricaricata ');
                 }
-                const data = await response.json();
-                
-
-                setListElement(data)
-                console.log('ul lista ricaricata ', data)
-
-            }catch(error){
-                console.log(error.message)
-            }
         }
-        fetchList()
+        callDb();
+        
     }, [isReloaded])
 
     async function eliminateTask(id){
-        try{
-            console.log(id)
-            const response = await fetch('http://localhost:3000/user/delete', {
+        
+        const response = await fetchData('http://localhost:3000/user/delete', {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
@@ -42,17 +36,19 @@ function ListsGroup({isReloaded}){
                 credentials: "include",
                 body: JSON.stringify({id})
             })
-            const data = await response.json();
-            console.log('delete effettuato ',data.tasks)
-            setListElement(data.tasks)
 
-        }catch(error){
-            console.log(error.message)
+        if(response){
+            console.log('delete effettuato ', response.tasks)
+            setListElement(response.tasks)
+        }else{
+            console.log(response.message)
         }
+           
+
     }
     async function updateTask(id, description, index){
-        try{
-            const response = await fetch('http://localhost:3000/user/update', {
+
+        const response = await fetchData('http://localhost:3000/user/update', {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -63,11 +59,10 @@ function ListsGroup({isReloaded}){
                     description: description
                 })
             })
-
-            const tasks = await response.json()
-            setListElement(prevTask => tasks.todos)
-        }catch(error){
-            console.log(error.message)
+        if(response){
+            setListElement(prevTask => response.todos)
+        }else{
+            console.log(response.message)
         }
     }
     return <ul>

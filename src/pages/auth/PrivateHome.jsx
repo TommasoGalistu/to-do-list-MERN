@@ -39,11 +39,11 @@ function PrivateHome(){
                 credentials: "include",
                 body: JSON.stringify(data)
             })
-
+            console.log(response)
             if(response){
 
-                const result = await response.json();
-                console.log("Elemento inserito in DB ", result)
+                // const result = await response.json();
+                console.log("Elemento inserito in DB ", response.message)
                 setIsSentCount(prevCount => prevCount + 1);
             }else{
                 console.log('errore nel caricamento pagina privata')

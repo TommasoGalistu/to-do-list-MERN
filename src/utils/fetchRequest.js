@@ -21,7 +21,9 @@ const useFetchWithLoading = () => {
             console.error("Errore fetch:", error);
             return null;
         }finally {
-            hideLoading(); 
+            setTimeout(() =>{
+                hideLoading(); 
+            }, 1000)
         }
     };
 
