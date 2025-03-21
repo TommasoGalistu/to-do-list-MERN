@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { useContext, memo } from "react";
+import { useContext, memo, useEffect } from "react";
 import { ContextData } from "../store/data";
 import { NavDropdown } from "react-bootstrap";
 
 const Header = memo(() => {
     const { isLoggin } = useContext(ContextData); // Recupera lo stato di autenticazione
 
+    
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
